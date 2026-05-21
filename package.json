@@ -1,0 +1,50 @@
+{
+  "name": "task-planner",
+  "version": "1.0.0",
+  "description": "MVP Task Planner — Express, SQLite, JWT, API keys",
+  "type": "module",
+  "main": "dist/server.js",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc && shx cp src/db/schema.sql dist/db/ && shx cp -r src/views dist/views && npm run build:css",
+    "build:css": "tailwindcss -i ./src/styles/input.css -o ./public/css/app.css --minify",
+    "start": "node dist/server.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "db:migrate": "tsx src/server.ts --migrate-only"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.8",
+    "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.19",
+    "@types/ejs": "^3.1.5",
+    "@types/express": "^5.0.2",
+    "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^25.9.0",
+    "@types/supertest": "^6.0.3",
+    "jest": "^29.7.0",
+    "shx": "^0.4.0",
+    "supertest": "^7.1.0",
+    "tailwindcss": "^4.1.8",
+    "ts-jest": "^29.3.4",
+    "tsx": "^4.19.4",
+    "typescript": "^6.0.3"
+  }
+}

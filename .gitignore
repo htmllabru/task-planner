@@ -1,0 +1,8 @@
+node_modules/
+dist/
+data/
+.env
+*.db
+coverage/
+deploy/ci_deploy_key
+deploy/ci_deploy_key.pub
