@@ -336,6 +336,7 @@ npm test
 ## Деплой на Selectel VDS
 
 Полная инструкция: [readme2.md](readme2.md).  
+**CI/CD и коммиты (кратко):** [readme3.md](readme3.md).  
 Секреты GitHub Actions: [deploy/ACTIONS-SECRETS.md](deploy/ACTIONS-SECRETS.md).
 
 ## Ограничения MVP
