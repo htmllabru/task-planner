@@ -79,3 +79,13 @@ sudo cat /home/deploy/.ssh/ci_deploy_key
 3. Сайт: http://81.163.31.249/
 
 Деплой использует **rsync** (не `git pull` на сервере), `.env` и `data/` на VDS не перезаписываются.
+
+### Ошибка `rm: could not remove file (code EACCES): dist/views/...`
+
+Папка `dist/` создана от **root**, а CI собирает от **deploy**. В workflow перед `npm run build` выполняется `sudo chown -R deploy:deploy /var/www/task-planner`.
+
+Один раз вручную на VDS:
+
+```bash
+sudo chown -R deploy:deploy /var/www/task-planner
+```

@@ -47,6 +47,10 @@ fi
 
 chown -R "$DEPLOY_USER:$DEPLOY_USER" "/home/$DEPLOY_USER/.ssh"
 
+echo "==> sudo для deploy (chown приложения без пароля — для GitHub Actions)"
+echo "deploy ALL=(ALL) NOPASSWD: /usr/bin/chown, /bin/chown" > /etc/sudoers.d/deploy-task-planner
+chmod 440 /etc/sudoers.d/deploy-task-planner
+
 echo "==> Каталог приложения"
 mkdir -p "$APP_DIR"
 chown "$DEPLOY_USER:$DEPLOY_USER" "$APP_DIR"

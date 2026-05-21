@@ -55,6 +55,8 @@ jobs:
           script_stop: true
           script: |
             set -e
+            # dist/ мог остаться от root — иначе deploy не сможет rm dist/views
+            sudo chown -R deploy:deploy /var/www/task-planner
             cd /var/www/task-planner
             npm ci
             npm run build

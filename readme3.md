@@ -36,6 +36,7 @@
 | **test** | Нет `JWT_SECRET` в CI (исправлено в коде) | deploy **не стартует** |
 | **deploy** | Нет Secrets `SSH_*` или ошибка Rsync | файлы **не доезжают** на VDS |
 | **deploy** | `error in libcrypto` / `Permission denied (publickey)` | Пересоздать Secret `SSH_PRIVATE_KEY` — см. [ACTIONS-SECRETS.md](deploy/ACTIONS-SECRETS.md) |
+| **deploy** | `EACCES` при `rm dist/views` | `sudo chown -R deploy:deploy /var/www/task-planner` на VDS (в workflow уже есть) |
 
 Проверка: https://github.com/htmllabru/task-planner/actions — оба job должны быть зелёными.
 
