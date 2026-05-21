@@ -1,6 +1,21 @@
-# GitHub Actions — Secrets
+# GitHub Actions — Secrets (секреты)
 
-Repo → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
+## Что такое Secrets простыми словами
+
+**Secrets** — это «сейф» на GitHub для паролей и ключей. Туда кладут данные, которые **нельзя** писать в коде и в чате.
+
+Когда срабатывает Actions после `git push`, workflow читает секреты и подключается к вашему VDS по SSH — как будто робот вводит ключ вместо вас.
+
+**Без секретов job `deploy` не сможет зайти на сервер** — сайт не обновится, хотя код на GitHub уже новый.
+
+## Как открыть настройку
+
+1. Репозиторий https://github.com/htmllabru/task-planner  
+2. Вкладка **Settings** (шестерёнка)  
+3. Слева: **Secrets and variables** → **Actions**  
+4. Кнопка **New repository secret**
+
+## Какие секреты добавить (для деплоя на VDS)
 
 | Secret | Значение |
 |--------|----------|
@@ -8,6 +23,8 @@ Repo → **Settings** → **Secrets and variables** → **Actions** → **New re
 | `SSH_USER` | `deploy` |
 | `SSH_PRIVATE_KEY` | приватный ключ CI (см. ниже) |
 | `SSH_PORT` | `22` (опционально) |
+
+`JWT_SECRET` для тестов в CI **не нужен** — подставляется автоматически в workflow.
 
 ## Где взять `SSH_PRIVATE_KEY`
 

@@ -40,10 +40,9 @@ const conn = new Client();
 conn.on('ready', async () => {
   const sftp = await new Promise((r, j) => conn.sftp((e, s) => (e ? j(e) : r(s))));
   await uploadDir(sftp, join(APP_ROOT, 'src'), `${APP_DIR}/src`);
-  for (const f of ['src/config/env.ts', 'src/routes/web/index.ts'].map((p) => join(APP_ROOT, p))) {
-    const rel = relative(APP_ROOT, f).replace(/\\/g, '/');
-    await new Promise((r, j) => sftp.fastPut(f, `${APP_DIR}/${rel}`, (e) => (e ? j(e) : r())));
-  }
+  await new Promise((r, j) =>
+    sftp.fastPut(join(APP_ROOT, 'package.json'), `${APP_DIR}/package.json`, (e) => (e ? j(e) : r())),
+  );
   await exec(conn, `cd ${APP_DIR} && sudo -u deploy npm run build && sudo -u deploy pm2 reload task-planner`);
   conn.end();
   console.log('\nDone.');

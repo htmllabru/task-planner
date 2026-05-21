@@ -7,6 +7,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      JWT_SECRET: test-jwt-secret-min-32-chars-long-for-ci
+      NODE_ENV: test
     steps:
       - uses: actions/checkout@v4
 

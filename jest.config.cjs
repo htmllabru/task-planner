@@ -13,4 +13,5 @@ module.exports = {
     ],
   },
   testMatch: ['**/tests/**/*.test.ts'],
+  setupFiles: ['<rootDir>/tests/helpers/setup-env.cjs'],
 };

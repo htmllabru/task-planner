@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc && shx cp src/db/schema.sql dist/db/ && shx cp -r src/views dist/views && npm run build:css",
+    "build": "tsc && shx cp src/db/schema.sql dist/db/ && shx rm -rf dist/views && shx cp -r src/views dist/views && npm run build:css",
     "build:css": "tailwindcss -i ./src/styles/input.css -o ./public/css/app.css --minify",
     "start": "node dist/server.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
