@@ -35,7 +35,7 @@
 |---------------|-----------|-----------|
 | **test** | Нет `JWT_SECRET` в CI (исправлено в коде) | deploy **не стартует** |
 | **deploy** | Нет Secrets `SSH_*` или ошибка Rsync | файлы **не доезжают** на VDS |
-| **deploy** | `No such file ... .ssh/deploy_key` | в workflow нужен `mkdir -p ~/.ssh` (уже в репо) |
+| **deploy** | `error in libcrypto` / `Permission denied (publickey)` | Пересоздать Secret `SSH_PRIVATE_KEY` — см. [ACTIONS-SECRETS.md](deploy/ACTIONS-SECRETS.md) |
 
 Проверка: https://github.com/htmllabru/task-planner/actions — оба job должны быть зелёными.
 

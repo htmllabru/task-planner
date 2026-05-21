@@ -38,6 +38,40 @@ sudo cat /home/deploy/.ssh/ci_deploy_key
 
 Скопируйте **весь** файл, включая строки `BEGIN` / `END`, в Secret `SSH_PRIVATE_KEY`.
 
+### Как правильно вставить ключ в GitHub
+
+1. **Delete** старый секрет `SSH_PRIVATE_KEY` (если был).
+2. **New repository secret** → имя `SSH_PRIVATE_KEY`.
+3. Вставьте ключ **целиком** — от `-----BEGIN` до `-----END` включительно.
+4. **Без** кавычек, пробелов в начале/конце, без `github_pat_...` (это другой токен).
+5. Ключ **без passphrase** (пароля на ключ). Иначе CI не сможет его открыть.
+
+Проверка на VDS, что публичная часть в `authorized_keys`:
+
+```bash
+ssh root@81.163.31.249
+sudo grep -F "$(cat /home/deploy/.ssh/ci_deploy_key.pub)" /home/deploy/.ssh/authorized_keys && echo OK
+```
+
+### Ошибка `error in libcrypto` / `Permission denied (publickey)`
+
+| Причина | Решение |
+|---------|---------|
+| В Secret попал **битый** или **обрезанный** ключ | Пересоздать Secret по инструкции выше |
+| Вставили **публичный** `.pub` вместо приватного | Нужен файл **без** `.pub` |
+| У ключа есть **passphrase** | Создать новый ключ **без** пароля (команды ниже) |
+| Публичный ключ не в `authorized_keys` | Команда `grep` выше |
+
+**Новый ключ для CI на VDS (без passphrase):**
+
+```bash
+sudo -u deploy ssh-keygen -t ed25519 -f /home/deploy/.ssh/ci_deploy_key -N "" -C "github-actions"
+sudo -u deploy bash -c 'cat /home/deploy/.ssh/ci_deploy_key.pub >> ~/.ssh/authorized_keys'
+sudo cat /home/deploy/.ssh/ci_deploy_key
+```
+
+Последняя команда выводит приватный ключ — **один раз** скопируйте в GitHub Secret `SSH_PRIVATE_KEY`.
+
 ## Проверка
 
 1. Push в ветку `main`.

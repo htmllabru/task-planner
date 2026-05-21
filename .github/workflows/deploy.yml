@@ -28,23 +28,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Корректная запись многострочного ключа (иначе error in libcrypto)
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Rsync to VDS
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          install -m 600 /dev/null ~/.ssh/deploy_key
-          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          RSYNC_RSH="ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no"
           rsync -avz \
             --exclude node_modules \
             --exclude .git \
             --exclude dist \
             --exclude data \
             --exclude .env \
-            -e "$RSYNC_RSH" \
+            -e "ssh -o StrictHostKeyChecking=no" \
             ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/task-planner/
 
       - name: Build and reload PM2
