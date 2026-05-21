@@ -204,9 +204,24 @@ nginx -t && systemctl reload nginx
 При каждом `push` в `main`:
 
 1. На runner: `npm ci` + `npm test`
-2. По SSH на VDS: `git pull` → `npm ci` → `npm run build` → `pm2 reload`
+2. **rsync** файлов на VDS (без `node_modules`, `dist`, `data`, `.env`)
+3. По SSH: `npm ci` → `npm run build` → `pm2 reload`
 
-Workflow: [.github/workflows/deploy.yml](.github/workflows/deploy.yml).
+Workflow: [.github/workflows/deploy.yml](.github/workflows/deploy.yml).  
+Secrets: [deploy/ACTIONS-SECRETS.md](deploy/ACTIONS-SECRETS.md).
+
+### Быстрая первичная настройка VDS с ПК
+
+Если репозиторий на GitHub ещё не создан, можно развернуть приложение напрямую:
+
+```powershell
+Set-Location C:\Users\A\Desktop\NODEJS\07-myapp
+npm install ssh2 --no-save
+$env:SSH_PASSWORD = '<root-пароль>'
+node deploy/setup-vds-remote.mjs
+```
+
+Скрипт: bootstrap, CI-ключ, загрузка файлов, `.env`, PM2, nginx. **Пароль не храните в git.**
 
 Проверка: внесите мелкое изменение, `git push`, на GitHub вкладка **Actions** → зелёный workflow.
 

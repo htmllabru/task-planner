@@ -333,6 +333,11 @@ npm test
 | `npm test` | Jest |
 | `npm run db:migrate` | только миграции |
 
+## Деплой на Selectel VDS
+
+Полная инструкция: [readme2.md](readme2.md).  
+Секреты GitHub Actions: [deploy/ACTIONS-SECRETS.md](deploy/ACTIONS-SECRETS.md).
+
 ## Ограничения MVP
 
 - `node:sqlite` — синхронный API

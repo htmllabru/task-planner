@@ -2,7 +2,7 @@
 # Первичная настройка VDS (запуск на сервере от root):
 #   curl -fsSL ... | bash
 # или: scp deploy/bootstrap-vds.sh root@81.163.31.249:/tmp/ && ssh root@81.163.31.249 bash /tmp/bootstrap-vds.sh
-set -euo pipefail
+set -eu
 
 DEPLOY_USER="${DEPLOY_USER:-deploy}"
 APP_DIR="${APP_DIR:-/var/www/task-planner}"

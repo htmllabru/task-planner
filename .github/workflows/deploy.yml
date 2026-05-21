@@ -23,7 +23,25 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
-      - name: Deploy over SSH
+      - uses: actions/checkout@v4
+
+      - name: Rsync to VDS
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          install -m 600 /dev/null ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          RSYNC_RSH="ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no"
+          rsync -avz \
+            --exclude node_modules \
+            --exclude .git \
+            --exclude dist \
+            --exclude data \
+            --exclude .env \
+            -e "$RSYNC_RSH" \
+            ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/task-planner/
+
+      - name: Build and reload PM2
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -34,8 +52,6 @@ jobs:
           script: |
             set -e
             cd /var/www/task-planner
-            git fetch origin main
-            git reset --hard origin/main
             npm ci
             npm run build
             pm2 reload ecosystem.config.cjs --update-env
